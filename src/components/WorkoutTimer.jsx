@@ -8,6 +8,8 @@ const RING_CIRCUMFERENCE = 2 * Math.PI * RING_R
 
 export default function WorkoutTimer({ session, onBack }) {
   const totalSessionDuration = sessionDuration(session)
+  const totalWorkTime = session.exercises.reduce((s, ex) => s + ex.workDuration, 0)
+  const totalRestTime = session.exercises.reduce((s, ex) => s + ex.restDuration, 0)
 
   // ── State ──────────────────────────────────────────────────────────────────
   const [exIdx, setExIdx]         = useState(0)
@@ -193,6 +195,11 @@ export default function WorkoutTimer({ session, onBack }) {
           </div>
           <span className="session-bar-label">{formatTime(totalSessionDuration)} / {formatTime(totalSessionDuration)}</span>
         </div>
+        <div className="timer-stats">
+          <span><span className="stat-label">Work</span> {formatTime(totalWorkTime)}</span>
+          <span><span className="stat-label">Rest</span> {formatTime(totalRestTime)}</span>
+          <span><span className="stat-label">Remaining</span> 0:00</span>
+        </div>
         <div className="done-ring-wrap">
           <svg className="ring-svg" viewBox="0 0 200 200">
             <circle className="ring-track" cx="100" cy="100" r={RING_R} />
@@ -229,6 +236,13 @@ export default function WorkoutTimer({ session, onBack }) {
         <span className="session-bar-label">
           {formatTime(elapsed)} / {formatTime(totalSessionDuration)}
         </span>
+      </div>
+
+      {/* Stats row */}
+      <div className="timer-stats">
+        <span><span className="stat-label">Work</span> {formatTime(totalWorkTime)}</span>
+        <span><span className="stat-label">Rest</span> {formatTime(totalRestTime)}</span>
+        <span><span className="stat-label">Remaining</span> {formatTime(Math.max(0, totalSessionDuration - elapsed))}</span>
       </div>
 
       {/* Exercise counter */}

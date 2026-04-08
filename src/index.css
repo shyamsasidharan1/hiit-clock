@@ -493,6 +493,147 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 }
 .parse-warnings ul { margin-top: 6px; padding-left: 16px; display: flex; flex-direction: column; gap: 4px; }
 
+/* ── Timer stats row ──────────────────────────────────────────────────────── */
+.timer-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 4px 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  gap: 8px;
+}
+.timer-stats span { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--border);
+}
+
+/* ── Admin bar / screen ───────────────────────────────────────────────────── */
+.admin-bar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+}
+.admin-toggle { color: var(--accent); font-size: 0.85rem; }
+.admin-screen {
+  width: 100%;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Workout Builder ──────────────────────────────────────────────────────── */
+.builder-screen {
+  width: 100%;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.builder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.field-input {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+.field-input:focus { outline: none; border-color: var(--accent); }
+
+.exercises-header { display: flex; align-items: center; justify-content: space-between; }
+
+.exercise-list { display: flex; flex-direction: column; gap: 10px; }
+
+.exercise-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.exercise-row-num {
+  font-size: 0.75rem;
+  color: var(--muted);
+  min-width: 18px;
+  padding-top: 12px;
+  text-align: center;
+}
+.exercise-row-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.exercise-durations { display: flex; gap: 10px; }
+.duration-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.duration-label { font-size: 0.7rem; color: var(--muted); }
+.duration-input { padding: 8px 10px; font-size: 0.9rem; }
+
+.remove-btn {
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  margin-top: 6px;
+  transition: color 0.15s;
+}
+.remove-btn:hover { color: var(--danger); }
+
+.add-exercise-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px dashed var(--accent);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 0.9rem;
+  width: 100%;
+  transition: background 0.15s;
+}
+.add-exercise-btn:hover { background: #a78bfa0d; }
+
+.limit-msg { font-size: 0.8rem; color: var(--muted); text-align: center; }
+
+.save-btn { width: 100%; margin-top: 6px; padding: 14px; font-size: 1rem; }
+.save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.builder-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 60vh;
+  color: var(--work);
+}
+.success-icon { font-size: 3rem; }
+
+/* ── Session picker updates ───────────────────────────────────────────────── */
+.picker-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+}
+.picker-loading, .picker-empty { color: var(--muted); font-size: 0.9rem; text-align: center; margin-top: 24px; }
+
 /* ── Mobile tweaks ────────────────────────────────────────────────────────── */
 @media (max-width: 380px) {
   .ring-wrap, .done-ring-wrap { width: 190px; height: 190px; }

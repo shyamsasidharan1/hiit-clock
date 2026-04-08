@@ -245,3 +245,5 @@ Include a sample file at `public/sample-workout.txt` using the example content f
 - No saving workouts to localStorage or IndexedDB.
 - No video or image support.
 - No custom sound files — use only Web Speech API.
+
+/* dummy update */

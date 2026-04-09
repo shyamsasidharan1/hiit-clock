@@ -9,8 +9,9 @@ const REGION       = process.env.AWS_REGION || 'us-east-1'
 const s3      = new S3Client({ region: REGION })
 const bedrock = new BedrockRuntimeClient({ region: REGION })
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin':  'https://main.dozd8zk2fm5by.amplifyapp.com',
+// All CORS handled here in code — Function URL CORS config must be empty
+const CORS = {
+  'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'content-type, x-admin-token',
 }
@@ -18,7 +19,7 @@ const CORS_HEADERS = {
 function respond(statusCode, body, extra = {}) {
   return {
     statusCode,
-    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS, ...extra },
+    headers: { 'Content-Type': 'application/json', ...CORS, ...extra },
     body: typeof body === 'string' ? body : JSON.stringify(body),
   }
 }
@@ -47,7 +48,7 @@ export const handler = async (event) => {
       if (!key) return respond(400, { error: 'Missing key parameter' })
       const res  = await s3.send(new GetObjectCommand({ Bucket: BUCKET, Key: key }))
       const text = await streamToText(res.Body)
-      return { statusCode: 200, headers: { 'Content-Type': 'text/plain', ...CORS_HEADERS }, body: text }
+      return { statusCode: 200, headers: { 'Content-Type': 'text/plain', ...CORS }, body: text }
     }
 
     // ── POST /workout — save a workout file ────────────────────────────────

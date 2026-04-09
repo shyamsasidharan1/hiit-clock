@@ -636,6 +636,19 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 .save-btn { width: 100%; margin-top: 6px; padding: 14px; font-size: 1rem; }
 .save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* Refinement section */
+.refine-section {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.refine-label { font-size: 0.82rem; color: var(--muted); }
+.refine-row { display: flex; gap: 8px; }
+.refine-input { flex: 1; }
+.refine-btn { flex-shrink: 0; white-space: nowrap; }
+
 .builder-success {
   display: flex;
   flex-direction: column;

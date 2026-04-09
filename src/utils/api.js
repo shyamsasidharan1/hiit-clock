@@ -37,12 +37,12 @@ export async function uploadWorkout(key, text, adminToken = null) {
   return { ok: true }
 }
 
-/** Generate a workout from a natural language description via Bedrock. */
-export async function generateWorkout(description) {
+/** Generate or refine a workout via Bedrock. Pass currentWorkout to refine. */
+export async function generateWorkout(description, currentWorkout = null) {
   const res = await fetch(`${API}/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ description }),
+    body: JSON.stringify({ description, ...(currentWorkout ? { currentWorkout } : {}) }),
   })
   const data = await res.json()
   if (!res.ok) return { ok: false, error: data.error || 'Generation failed' }

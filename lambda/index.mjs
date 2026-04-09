@@ -85,13 +85,15 @@ export const handler = async (event) => {
       return respond(200, { ok: true })
     }
 
-    // ── POST /generate — generate workout text via Bedrock ─────────────────
+    // ── POST /generate — generate or refine workout text via Bedrock ────────
     if (method === 'POST' && path === '/generate') {
       const body = JSON.parse(event.body || '{}')
-      const { description } = body
+      const { description, currentWorkout } = body
       if (!description) return respond(400, { error: 'Missing description' })
 
-      const prompt = buildPrompt(description)
+      const prompt = currentWorkout
+        ? buildRefinePrompt(currentWorkout, description)
+        : buildPrompt(description)
 
       const bedrockRes = await bedrock.send(new InvokeModelCommand({
         modelId:     'us.anthropic.claude-haiku-4-5-20251001-v1:0',
@@ -139,6 +141,24 @@ User's workout description:
 ${description}
 
 Respond with ONLY the formatted workout text.`
+}
+
+function buildRefinePrompt(currentWorkout, instruction) {
+  return `You are a HIIT workout editor. Modify the existing workout based on the user's instruction.
+
+FORMAT RULES — follow exactly:
+- Session name on its own line in square brackets: [Session Name]
+- Each exercise: Name, work_seconds, rest_seconds, How-to instruction
+- Work and rest durations are integers (seconds). Rest can be 0.
+- No extra text, no explanations, no markdown — only the formatted workout.
+
+CURRENT WORKOUT:
+${currentWorkout}
+
+USER INSTRUCTION:
+${instruction}
+
+Return the complete updated workout with ONLY the formatted workout text.`
 }
 
 async function streamToText(stream) {

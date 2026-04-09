@@ -345,6 +345,12 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+.ex-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 .ex-description {
   font-size: 0.85rem;
   color: var(--muted);
@@ -355,6 +361,77 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 .ex-next {
   font-size: 0.8rem;
   color: var(--muted);
+}
+.demo-btn {
+  font-size: 0.75rem;
+  background: #ffffff15;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.demo-btn:hover { color: var(--text); background: #ffffff25; }
+.demo-btn-sm {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.demo-btn-sm:hover { color: var(--accent); }
+.ptd-demo { text-align: center; }
+
+/* ── Video Modal ───────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000000cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title { font-weight: 600; font-size: 1rem; }
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 16px; }
+.modal-status { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 24px 0; }
+.modal-error { color: var(--danger); }
+.modal-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 8px;
+  display: block;
 }
 
 /* Controls — pill strip */

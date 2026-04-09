@@ -42,6 +42,18 @@ export const handler = async (event) => {
       return respond(200, files)
     }
 
+    // ── GET /video?exercise=xxx — YouTube demo video ───────────────────────
+    if (method === 'GET' && path === '/video') {
+      const exercise = event.queryStringParameters?.exercise
+      if (!exercise) return respond(400, { error: 'Missing exercise parameter' })
+      const q = encodeURIComponent(`how to do ${exercise} exercise proper form`)
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&videoDuration=short&maxResults=1&key=${process.env.YOUTUBE_API_KEY}`
+      const ytRes = await fetch(url)
+      const ytData = await ytRes.json()
+      if (!ytData.items?.length) return respond(404, { error: 'No video found' })
+      return respond(200, { videoId: ytData.items[0].id.videoId })
+    }
+
     // ── GET /workout?key=xxx — fetch one workout file ──────────────────────
     if (method === 'GET' && path === '/workout') {
       const key = event.queryStringParameters?.key

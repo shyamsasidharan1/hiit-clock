@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { sessionDuration, formatTime } from '../utils/parseWorkout'
 import * as Audio from './AudioController'
 import SettingsPanel from './SettingsPanel'
+import VideoModal from './VideoModal'
 
 const RING_R = 88
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_R
@@ -17,9 +18,10 @@ export default function WorkoutTimer({ session, onBack }) {
   const [timeLeft, setTimeLeft]   = useState(session.exercises[0].workDuration)
   const [running, setRunning]     = useState(false)
   const [elapsed, setElapsed]     = useState(0)
-  const [muted, setMuted]         = useState(false)
+  const [muted, setMuted]               = useState(false)
   const [showSettings, setShowSettings] = useState(false)
-  const [pulse, setPulse]         = useState(false)
+  const [pulse, setPulse]               = useState(false)
+  const [demoExercise, setDemoExercise] = useState(null)
 
   // Audio cue flags for current interval
   const halfFired   = useRef(false)
@@ -273,7 +275,10 @@ export default function WorkoutTimer({ session, onBack }) {
 
       {/* Exercise card */}
       <div className="ex-card">
-        <div className="ex-name">{exercise.name}</div>
+        <div className="ex-name-row">
+          <div className="ex-name">{exercise.name}</div>
+          <button className="demo-btn" onClick={() => setDemoExercise(exercise.name)} title="Watch demo">▶ Demo</button>
+        </div>
         {exercise.description && (
           <div className="ex-description">{exercise.description}</div>
         )}
@@ -281,6 +286,10 @@ export default function WorkoutTimer({ session, onBack }) {
           Up next: {nextEx ? nextEx.name : 'Finish'}
         </div>
       </div>
+
+      {demoExercise && (
+        <VideoModal exerciseName={demoExercise} onClose={() => setDemoExercise(null)} />
+      )}
 
       {/* Controls */}
       <div className="controls">

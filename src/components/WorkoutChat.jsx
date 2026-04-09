@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { generateWorkout, uploadWorkout, nameToKey } from '../utils/api'
 import { parseWorkoutFile, sessionDuration, formatTime } from '../utils/parseWorkout'
+import VideoModal from './VideoModal'
 
 export default function WorkoutChat({ onBack, onSaved }) {
   const [description, setDescription] = useState('')
@@ -10,6 +11,7 @@ export default function WorkoutChat({ onBack, onSaved }) {
   const [saving, setSaving]           = useState(false)
   const [error, setError]             = useState(null)
   const [saved, setSaved]             = useState(false)
+  const [demoExercise, setDemoExercise] = useState(null)
   const refineRef = useRef(null)
 
   // Scroll refinement input into view when preview appears
@@ -146,6 +148,7 @@ export default function WorkoutChat({ onBack, onSaved }) {
                       <th>How to</th>
                       <th>Work</th>
                       <th>Rest</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -155,6 +158,7 @@ export default function WorkoutChat({ onBack, onSaved }) {
                         <td className="ptd-desc">{ex.description || '—'}</td>
                         <td className="ptd-time"><span className="work-badge">{ex.workDuration}s</span></td>
                         <td className="ptd-time">{ex.restDuration > 0 ? <span className="rest-badge">{ex.restDuration}s</span> : '—'}</td>
+                        <td className="ptd-demo"><button className="demo-btn-sm" onClick={() => setDemoExercise(ex.name)} title="Watch demo">▶</button></td>
                       </tr>
                     ))}
                   </tbody>
@@ -195,6 +199,10 @@ export default function WorkoutChat({ onBack, onSaved }) {
           </div>
         )}
       </div>
+
+      {demoExercise && (
+        <VideoModal exerciseName={demoExercise} onClose={() => setDemoExercise(null)} />
+      )}
     </div>
   )
 }

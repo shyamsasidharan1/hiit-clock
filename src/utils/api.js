@@ -49,6 +49,14 @@ export async function generateWorkout(description, currentWorkout = null) {
   return { ok: true, text: data.text }
 }
 
+/** Fetch a YouTube demo video ID for an exercise name. */
+export async function getExerciseVideo(exerciseName) {
+  const res = await fetch(`${API}/video?exercise=${encodeURIComponent(exerciseName)}`)
+  const data = await res.json()
+  if (!res.ok) return { ok: false, error: data.error || 'No video found' }
+  return { ok: true, videoId: data.videoId }
+}
+
 /** Delete a workout file by S3 key. */
 export async function deleteWorkout(key) {
   const res = await fetch(`${API}/workout?key=${encodeURIComponent(key)}`, { method: 'DELETE' })

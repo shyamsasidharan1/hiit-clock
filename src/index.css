@@ -374,17 +374,20 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 }
 .demo-btn:hover { color: var(--text); background: #ffffff25; }
 .demo-btn-sm {
-  background: none;
+  background: var(--accent);
   border: none;
-  color: var(--muted);
-  font-size: 0.85rem;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: color 0.2s;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: opacity 0.2s;
 }
-.demo-btn-sm:hover { color: var(--accent); }
-.ptd-demo { text-align: center; }
+.demo-btn-sm::before { content: '▶ '; }
+.demo-btn-sm:hover { opacity: 0.85; }
+.ptd-demo { text-align: center; padding-left: 6px; }
 
 /* ── Video Modal ───────────────────────────────────────────────────────────── */
 .modal-overlay {

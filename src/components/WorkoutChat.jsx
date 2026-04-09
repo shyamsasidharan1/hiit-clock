@@ -158,7 +158,7 @@ export default function WorkoutChat({ onBack, onSaved }) {
                         <td className="ptd-desc">{ex.description || '—'}</td>
                         <td className="ptd-time"><span className="work-badge">{ex.workDuration}s</span></td>
                         <td className="ptd-time">{ex.restDuration > 0 ? <span className="rest-badge">{ex.restDuration}s</span> : '—'}</td>
-                        <td className="ptd-demo"><button className="demo-btn-sm" onClick={() => setDemoExercise(ex.name)} title="Watch demo">▶</button></td>
+                        <td className="ptd-demo"><button className="demo-btn-sm" onClick={() => setDemoExercise(ex.name)}>Demo</button></td>
                       </tr>
                     ))}
                   </tbody>

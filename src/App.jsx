@@ -2,6 +2,7 @@ import { useState } from 'react'
 import SessionPicker from './components/SessionPicker'
 import WorkoutTimer from './components/WorkoutTimer'
 import WorkoutBuilder from './components/WorkoutBuilder'
+import WorkoutChat from './components/WorkoutChat'
 import AdminUploader from './components/AdminUploader'
 
 const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN
@@ -12,18 +13,13 @@ function isAdmin() {
   return params.get('admin') === ADMIN_TOKEN
 }
 
-// screens: 'pick' | 'build' | 'timer' | 'admin'
+// screens: 'pick' | 'build' | 'generate' | 'timer' | 'admin'
 export default function App() {
-  const [screen, setScreen]     = useState('pick')
-  const [session, setSession]   = useState(null)
-  const [admin]                 = useState(isAdmin)
+  const [screen, setScreen]         = useState('pick')
+  const [session, setSession]       = useState(null)
+  const [admin]                     = useState(isAdmin)
   const [refreshKey, setRefreshKey] = useState(0)
-  const [speechSupported]       = useState(() => !!window.speechSynthesis)
-
-  function handleSelect(s) {
-    setSession(s)
-    setScreen('timer')
-  }
+  const [speechSupported]           = useState(() => !!window.speechSynthesis)
 
   function handleSaved() {
     setRefreshKey(k => k + 1)
@@ -48,19 +44,20 @@ export default function App() {
             </div>
           )}
           <SessionPicker
-            onSelect={handleSelect}
-            onBack={() => setScreen('pick')}
+            onSelect={s => { setSession(s); setScreen('timer') }}
             onBuild={() => setScreen('build')}
+            onGenerate={() => setScreen('generate')}
             refreshKey={refreshKey}
           />
         </>
       )}
 
       {screen === 'build' && (
-        <WorkoutBuilder
-          onBack={() => setScreen('pick')}
-          onSaved={handleSaved}
-        />
+        <WorkoutBuilder onBack={() => setScreen('pick')} onSaved={handleSaved} />
+      )}
+
+      {screen === 'generate' && (
+        <WorkoutChat onBack={() => setScreen('pick')} onSaved={handleSaved} />
       )}
 
       {screen === 'admin' && (
@@ -71,10 +68,7 @@ export default function App() {
       )}
 
       {screen === 'timer' && session && (
-        <WorkoutTimer
-          session={session}
-          onBack={() => setScreen('pick')}
-        />
+        <WorkoutTimer session={session} onBack={() => setScreen('pick')} />
       )}
     </div>
   )

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { parseWorkoutFile } from '../utils/parseWorkout'
-import { uploadWorkout, nameToKey } from '../utils/s3'
+import { uploadWorkout, nameToKey } from '../utils/api'
+
+const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN
 
 export default function AdminUploader({ onDone }) {
-  const [status, setStatus] = useState(null)
+  const [status, setStatus]     = useState(null)
   const [uploading, setUploading] = useState(false)
 
   async function handleFile(e) {
@@ -30,9 +32,7 @@ export default function AdminUploader({ onDone }) {
           `[${session.name}]`,
           ...session.exercises.map(ex => `${ex.name}, ${ex.workDuration}, ${ex.restDuration}`),
         ]
-        const text = lines.join('\n')
-        const key  = nameToKey(session.name)
-        const res  = await uploadWorkout(key, text)
+        const res = await uploadWorkout(nameToKey(session.name), lines.join('\n'), ADMIN_TOKEN)
         if (!res.ok) errors.push(`"${session.name}": ${res.error}`)
       }
 
@@ -54,13 +54,8 @@ export default function AdminUploader({ onDone }) {
       <p className="admin-note">
         Upload a <code>.txt</code> file. Each session is saved as a separate workout in S3.
       </p>
-      <input
-        type="file"
-        accept=".txt"
-        onChange={handleFile}
-        className="admin-file-input"
-        disabled={uploading}
-      />
+      <input type="file" accept=".txt" onChange={handleFile}
+        className="admin-file-input" disabled={uploading} />
       {uploading && <p className="admin-status ok">Uploading…</p>}
       {status && !uploading && (
         <p className={`admin-status ${status.type}`}>{status.msg}</p>

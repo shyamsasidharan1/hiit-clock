@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { uploadWorkout, nameToKey } from '../utils/s3'
+import { uploadWorkout, nameToKey } from '../utils/api'
 
 const MAX_EXERCISES = 20
 
 const emptyExercise = () => ({ name: '', workDuration: '', restDuration: '' })
 
 export default function WorkoutBuilder({ onBack, onSaved }) {
-  const [workoutName, setWorkoutName]   = useState('')
-  const [authorEmail, setAuthorEmail]   = useState('')
-  const [exercises, setExercises]       = useState([emptyExercise()])
-  const [saving, setSaving]             = useState(false)
-  const [error, setError]               = useState(null)
-  const [success, setSuccess]           = useState(false)
+  const [workoutName, setWorkoutName] = useState('')
+  const [authorEmail, setAuthorEmail] = useState('')
+  const [exercises, setExercises]     = useState([emptyExercise()])
+  const [saving, setSaving]           = useState(false)
+  const [error, setError]             = useState(null)
+  const [success, setSuccess]         = useState(false)
 
   function addExercise() {
     if (exercises.length >= MAX_EXERCISES) return
@@ -27,17 +27,14 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
   }
 
   function validate() {
-    if (!workoutName.trim())    return 'Workout name is required.'
-    if (!authorEmail.trim() || !authorEmail.includes('@'))
-                                return 'A valid author email is required.'
+    if (!workoutName.trim()) return 'Workout name is required.'
+    if (!authorEmail.trim() || !authorEmail.includes('@')) return 'A valid author email is required.'
     if (exercises.length === 0) return 'Add at least one exercise.'
     for (let i = 0; i < exercises.length; i++) {
       const ex = exercises[i]
-      if (!ex.name.trim())                           return `Exercise ${i + 1}: name is required.`
-      if (!ex.workDuration || parseInt(ex.workDuration) <= 0)
-                                                     return `Exercise ${i + 1}: work duration must be > 0.`
-      if (ex.restDuration === '' || parseInt(ex.restDuration) < 0)
-                                                     return `Exercise ${i + 1}: rest duration must be ≥ 0.`
+      if (!ex.name.trim()) return `Exercise ${i + 1}: name is required.`
+      if (!ex.workDuration || parseInt(ex.workDuration) <= 0) return `Exercise ${i + 1}: work duration must be > 0.`
+      if (ex.restDuration === '' || parseInt(ex.restDuration) < 0) return `Exercise ${i + 1}: rest duration must be ≥ 0.`
     }
     return null
   }
@@ -48,27 +45,18 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
     setError(null)
     setSaving(true)
 
-    // Build .txt content
     const lines = [
       `# Created by ${authorEmail}`,
       '',
       `[${workoutName.trim()}]`,
       ...exercises.map(ex => `${ex.name.trim()}, ${ex.workDuration}, ${ex.restDuration}`),
     ]
-    const text = lines.join('\n')
-    const key  = nameToKey(workoutName)
-
-    const result = await uploadWorkout(key, text)
+    const result = await uploadWorkout(nameToKey(workoutName), lines.join('\n'))
     setSaving(false)
 
-    if (!result.ok) {
-      setError(result.error)
-      return
-    }
+    if (!result.ok) { setError(result.error); return }
     setSuccess(true)
-    setTimeout(() => {
-      onSaved()
-    }, 1500)
+    setTimeout(() => onSaved(), 1500)
   }
 
   if (success) {
@@ -88,29 +76,17 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
       <h2 className="picker-title">Build a Workout</h2>
 
       <div className="builder-form">
-        {/* Workout meta */}
         <div className="field-group">
           <label className="field-label">Workout Name</label>
-          <input
-            className="field-input"
-            type="text"
-            placeholder="e.g. Morning HIIT"
-            value={workoutName}
-            onChange={e => setWorkoutName(e.target.value)}
-          />
+          <input className="field-input" type="text" placeholder="e.g. Morning HIIT"
+            value={workoutName} onChange={e => setWorkoutName(e.target.value)} />
         </div>
         <div className="field-group">
           <label className="field-label">Author Email</label>
-          <input
-            className="field-input"
-            type="email"
-            placeholder="you@example.com"
-            value={authorEmail}
-            onChange={e => setAuthorEmail(e.target.value)}
-          />
+          <input className="field-input" type="email" placeholder="you@example.com"
+            value={authorEmail} onChange={e => setAuthorEmail(e.target.value)} />
         </div>
 
-        {/* Exercises */}
         <div className="exercises-header">
           <span className="field-label">Exercises ({exercises.length}/{MAX_EXERCISES})</span>
         </div>
@@ -120,35 +96,18 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
             <div key={i} className="exercise-row">
               <div className="exercise-row-num">{i + 1}</div>
               <div className="exercise-row-fields">
-                <input
-                  className="field-input"
-                  type="text"
-                  placeholder="Exercise name"
-                  value={ex.name}
-                  onChange={e => updateExercise(i, 'name', e.target.value)}
-                />
+                <input className="field-input" type="text" placeholder="Exercise name"
+                  value={ex.name} onChange={e => updateExercise(i, 'name', e.target.value)} />
                 <div className="exercise-durations">
                   <div className="duration-field">
                     <label className="duration-label">Work (s)</label>
-                    <input
-                      className="field-input duration-input"
-                      type="number"
-                      min="1"
-                      placeholder="45"
-                      value={ex.workDuration}
-                      onChange={e => updateExercise(i, 'workDuration', e.target.value)}
-                    />
+                    <input className="field-input duration-input" type="number" min="1" placeholder="45"
+                      value={ex.workDuration} onChange={e => updateExercise(i, 'workDuration', e.target.value)} />
                   </div>
                   <div className="duration-field">
                     <label className="duration-label">Rest (s)</label>
-                    <input
-                      className="field-input duration-input"
-                      type="number"
-                      min="0"
-                      placeholder="15"
-                      value={ex.restDuration}
-                      onChange={e => updateExercise(i, 'restDuration', e.target.value)}
-                    />
+                    <input className="field-input duration-input" type="number" min="0" placeholder="15"
+                      value={ex.restDuration} onChange={e => updateExercise(i, 'restDuration', e.target.value)} />
                   </div>
                 </div>
               </div>
@@ -159,14 +118,10 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
           ))}
         </div>
 
-        {exercises.length < MAX_EXERCISES && (
-          <button className="add-exercise-btn" onClick={addExercise}>
-            + Add Exercise
-          </button>
-        )}
-        {exercises.length >= MAX_EXERCISES && (
-          <p className="limit-msg">Maximum of {MAX_EXERCISES} exercises reached.</p>
-        )}
+        {exercises.length < MAX_EXERCISES
+          ? <button className="add-exercise-btn" onClick={addExercise}>+ Add Exercise</button>
+          : <p className="limit-msg">Maximum of {MAX_EXERCISES} exercises reached.</p>
+        }
 
         {error && <p className="error-msg">{error}</p>}
 

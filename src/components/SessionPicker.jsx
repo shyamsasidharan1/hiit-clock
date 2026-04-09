@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
-import { listWorkouts, getWorkout } from '../utils/s3'
+import { listWorkouts, getWorkout } from '../utils/api'
 import { parseWorkoutFile, sessionDuration, formatTime } from '../utils/parseWorkout'
 
-export default function SessionPicker({ onSelect, onBack, onBuild, refreshKey }) {
-  const [workouts, setWorkouts] = useState([])   // [{ key, sessions }]
+export default function SessionPicker({ onSelect, onBack, onBuild, onGenerate, refreshKey }) {
+  const [workouts, setWorkouts] = useState([])
   const [loading, setLoading]   = useState(true)
   const [error, setError]       = useState(null)
 
-  useEffect(() => {
-    load()
-  }, [refreshKey])
+  useEffect(() => { load() }, [refreshKey])
 
   async function load() {
     setLoading(true)
@@ -25,7 +23,7 @@ export default function SessionPicker({ onSelect, onBack, onBuild, refreshKey })
       )
       setWorkouts(results.flat())
     } catch (e) {
-      setError('Could not load workouts from storage. Check your connection.')
+      setError('Could not load workouts. Check your connection.')
     } finally {
       setLoading(false)
     }
@@ -34,17 +32,20 @@ export default function SessionPicker({ onSelect, onBack, onBuild, refreshKey })
   return (
     <div className="picker-screen">
       <div className="picker-header-row">
-        <button className="btn-ghost back-btn" onClick={onBack}>← Back</button>
-        <button className="btn-secondary" onClick={onBuild}>+ Build Workout</button>
+        <h2 className="picker-title">Workouts</h2>
+        <div className="picker-actions">
+          <button className="btn-secondary ai-btn" onClick={onGenerate}>✦ AI Generate</button>
+          <button className="btn-ghost" onClick={onBuild}>+ Build</button>
+        </div>
       </div>
-
-      <h2 className="picker-title">Available Workouts</h2>
 
       {loading && <p className="picker-loading">Loading workouts…</p>}
       {error   && <p className="error-msg">{error}</p>}
 
       {!loading && !error && workouts.length === 0 && (
-        <p className="picker-empty">No workouts yet. Build one or ask an admin to upload a file.</p>
+        <p className="picker-empty">
+          No workouts yet. Use <strong>AI Generate</strong> or <strong>Build</strong> to create one.
+        </p>
       )}
 
       {!loading && !error && workouts.length > 0 && (

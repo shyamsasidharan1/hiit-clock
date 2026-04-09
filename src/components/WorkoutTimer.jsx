@@ -274,6 +274,9 @@ export default function WorkoutTimer({ session, onBack }) {
       {/* Exercise card */}
       <div className="ex-card">
         <div className="ex-name">{exercise.name}</div>
+        {exercise.description && (
+          <div className="ex-description">{exercise.description}</div>
+        )}
         <div className="ex-next">
           Up next: {nextEx ? nextEx.name : 'Finish'}
         </div>

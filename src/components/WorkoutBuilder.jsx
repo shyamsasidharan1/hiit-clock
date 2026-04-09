@@ -3,7 +3,7 @@ import { uploadWorkout, nameToKey } from '../utils/api'
 
 const MAX_EXERCISES = 20
 
-const emptyExercise = () => ({ name: '', workDuration: '', restDuration: '' })
+const emptyExercise = () => ({ name: '', workDuration: '', restDuration: '', description: '' })
 
 export default function WorkoutBuilder({ onBack, onSaved }) {
   const [workoutName, setWorkoutName] = useState('')
@@ -49,7 +49,10 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
       `# Created by ${authorEmail}`,
       '',
       `[${workoutName.trim()}]`,
-      ...exercises.map(ex => `${ex.name.trim()}, ${ex.workDuration}, ${ex.restDuration}`),
+      ...exercises.map(ex => {
+        const base = `${ex.name.trim()}, ${ex.workDuration}, ${ex.restDuration}`
+        return ex.description.trim() ? `${base}, ${ex.description.trim()}` : base
+      }),
     ]
     const result = await uploadWorkout(nameToKey(workoutName), lines.join('\n'))
     setSaving(false)
@@ -98,6 +101,8 @@ export default function WorkoutBuilder({ onBack, onSaved }) {
               <div className="exercise-row-fields">
                 <input className="field-input" type="text" placeholder="Exercise name"
                   value={ex.name} onChange={e => updateExercise(i, 'name', e.target.value)} />
+                <input className="field-input" type="text" placeholder="Description (optional, e.g. Keep back straight)"
+                  value={ex.description} onChange={e => updateExercise(i, 'description', e.target.value)} />
                 <div className="exercise-durations">
                   <div className="duration-field">
                     <label className="duration-label">Work (s)</label>

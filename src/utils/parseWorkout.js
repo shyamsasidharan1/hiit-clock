@@ -36,7 +36,8 @@ export function parseWorkoutFile(text) {
       return
     }
 
-    const [name, workRaw, restRaw] = parts
+    const [name, workRaw, restRaw, ...descParts] = parts
+    const description = descParts.join(',').trim()
     const workDuration = parseInt(workRaw, 10)
     const restDuration = parseInt(restRaw, 10)
 
@@ -53,7 +54,7 @@ export function parseWorkoutFile(text) {
       return
     }
 
-    current.exercises.push({ name, workDuration, restDuration })
+    current.exercises.push({ name, workDuration, restDuration, description })
   })
 
   // Filter out sessions with no exercises and warn

@@ -55,7 +55,10 @@ export default function WorkoutChat({ onBack, onSaved }) {
   function buildSessionText(session) {
     return [
       `[${session.name}]`,
-      ...session.exercises.map(ex => `${ex.name}, ${ex.workDuration}, ${ex.restDuration}`),
+      ...session.exercises.map(ex => {
+        const base = `${ex.name}, ${ex.workDuration}, ${ex.restDuration}`
+        return ex.description ? `${base}, ${ex.description}` : base
+      }),
     ].join('\n')
   }
 
@@ -123,13 +126,18 @@ export default function WorkoutChat({ onBack, onSaved }) {
                 <ul className="preview-exercise-list">
                   {session.exercises.map((ex, j) => (
                     <li key={j} className="preview-exercise">
-                      <span className="preview-ex-name">{ex.name}</span>
-                      <span className="preview-ex-times">
-                        <span className="work-badge">{ex.workDuration}s</span>
-                        {ex.restDuration > 0 && (
-                          <span className="rest-badge">{ex.restDuration}s rest</span>
-                        )}
-                      </span>
+                      <div className="preview-ex-main">
+                        <span className="preview-ex-name">{ex.name}</span>
+                        <span className="preview-ex-times">
+                          <span className="work-badge">{ex.workDuration}s</span>
+                          {ex.restDuration > 0 && (
+                            <span className="rest-badge">{ex.restDuration}s rest</span>
+                          )}
+                        </span>
+                      </div>
+                      {ex.description && (
+                        <div className="preview-ex-desc">{ex.description}</div>
+                      )}
                     </li>
                   ))}
                 </ul>

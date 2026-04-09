@@ -330,6 +330,13 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+.ex-description {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  margin: 4px 0 2px;
+  line-height: 1.4;
+}
 .ex-next {
   font-size: 0.8rem;
   color: var(--muted);
@@ -729,15 +736,18 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 .preview-exercise-list { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
 .preview-exercise {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 2px;
   align-items: center;
   font-size: 0.88rem;
   padding: 6px 10px;
   background: var(--surface2);
   border-radius: 8px;
 }
+.preview-ex-main { display: flex; justify-content: space-between; align-items: center; }
 .preview-ex-name { color: var(--text); }
 .preview-ex-times { display: flex; gap: 6px; }
+.preview-ex-desc { font-size: 0.75rem; color: var(--muted); font-style: italic; }
 .work-badge {
   background: #16a34a22;
   color: var(--work);

@@ -116,16 +116,16 @@ function buildPrompt(description) {
 
 FORMAT RULES — follow exactly:
 - Session name on its own line in square brackets: [Session Name]
-- Each exercise: Name, work_seconds, rest_seconds, Description
+- Each exercise: Name, work_seconds, rest_seconds, How-to instruction
 - Work and rest durations are integers (seconds). Rest can be 0.
-- Description is a short coaching cue (e.g. "Keep core tight", "Land softly"). Always include one.
+- How-to instruction: one concise sentence on correct form and execution (e.g. "Stand with feet shoulder-width apart and jump side to side keeping knees soft"). Always include one.
 - No extra text, no explanations, no markdown — only the formatted workout.
 
 EXAMPLE OUTPUT:
 [Morning HIIT]
-Jumping Jacks, 45, 15, Arms fully extended, land with soft knees
-Push-Ups, 30, 10, Keep body in a straight line
-Burpees, 40, 20, Explosive jump at the top
+Jumping Jacks, 45, 15, Start with feet together then jump to spread legs and raise arms overhead simultaneously
+Push-Ups, 30, 10, Lower chest to floor keeping body straight then push back up with arms fully extending
+Burpees, 40, 20, Drop to a plank then jump feet to hands and explode upward with arms overhead
 
 User's workout description:
 ${description}

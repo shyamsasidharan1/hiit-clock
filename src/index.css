@@ -733,21 +733,33 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 .preview-session { display: flex; flex-direction: column; gap: 6px; }
 .preview-session-name { font-size: 1.05rem; font-weight: 700; }
 .preview-session-meta { font-size: 0.78rem; color: var(--muted); }
-.preview-exercise-list { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
-.preview-exercise {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: center;
-  font-size: 0.88rem;
-  padding: 6px 10px;
-  background: var(--surface2);
-  border-radius: 8px;
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-top: 8px;
 }
-.preview-ex-main { display: flex; justify-content: space-between; align-items: center; }
-.preview-ex-name { color: var(--text); }
-.preview-ex-times { display: flex; gap: 6px; }
-.preview-ex-desc { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+.preview-table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+.preview-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 6px 8px;
+}
+.preview-table td {
+  padding: 8px 6px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+.preview-table tbody tr:last-child td { border-bottom: none; }
+.ptd-name { font-weight: 600; color: var(--text); white-space: nowrap; padding-right: 10px; }
+.ptd-desc { color: var(--muted); font-style: italic; line-height: 1.4; }
+.ptd-time { text-align: center; white-space: nowrap; }
 .work-badge {
   background: #16a34a22;
   color: var(--work);

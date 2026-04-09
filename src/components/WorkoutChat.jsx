@@ -123,24 +123,26 @@ export default function WorkoutChat({ onBack, onSaved }) {
                 <div className="preview-session-meta">
                   {session.exercises.length} exercises · {formatTime(sessionDuration(session))}
                 </div>
-                <ul className="preview-exercise-list">
-                  {session.exercises.map((ex, j) => (
-                    <li key={j} className="preview-exercise">
-                      <div className="preview-ex-main">
-                        <span className="preview-ex-name">{ex.name}</span>
-                        <span className="preview-ex-times">
-                          <span className="work-badge">{ex.workDuration}s</span>
-                          {ex.restDuration > 0 && (
-                            <span className="rest-badge">{ex.restDuration}s rest</span>
-                          )}
-                        </span>
-                      </div>
-                      {ex.description && (
-                        <div className="preview-ex-desc">{ex.description}</div>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                <table className="preview-table">
+                  <thead>
+                    <tr>
+                      <th>Exercise</th>
+                      <th>How to</th>
+                      <th>Work</th>
+                      <th>Rest</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {session.exercises.map((ex, j) => (
+                      <tr key={j}>
+                        <td className="ptd-name">{ex.name}</td>
+                        <td className="ptd-desc">{ex.description || '—'}</td>
+                        <td className="ptd-time"><span className="work-badge">{ex.workDuration}s</span></td>
+                        <td className="ptd-time">{ex.restDuration > 0 ? <span className="rest-badge">{ex.restDuration}s</span> : '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             ))}
 

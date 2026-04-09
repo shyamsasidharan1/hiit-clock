@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SessionPicker from './components/SessionPicker'
+import SessionPreview from './components/SessionPreview'
 import WorkoutTimer from './components/WorkoutTimer'
 import WorkoutBuilder from './components/WorkoutBuilder'
 import WorkoutChat from './components/WorkoutChat'
@@ -13,7 +14,7 @@ function isAdmin() {
   return params.get('admin') === ADMIN_TOKEN
 }
 
-// screens: 'pick' | 'build' | 'generate' | 'timer' | 'admin'
+// screens: 'pick' | 'preview' | 'build' | 'generate' | 'timer' | 'admin'
 export default function App() {
   const [screen, setScreen]         = useState('pick')
   const [session, setSession]       = useState(null)
@@ -44,7 +45,7 @@ export default function App() {
             </div>
           )}
           <SessionPicker
-            onSelect={s => { setSession(s); setScreen('timer') }}
+            onSelect={s => { setSession(s); setScreen('preview') }}
             onBuild={() => setScreen('build')}
             onGenerate={() => setScreen('generate')}
             refreshKey={refreshKey}
@@ -67,8 +68,16 @@ export default function App() {
         </div>
       )}
 
+      {screen === 'preview' && session && (
+        <SessionPreview
+          session={session}
+          onStart={() => setScreen('timer')}
+          onBack={() => setScreen('pick')}
+        />
+      )}
+
       {screen === 'timer' && session && (
-        <WorkoutTimer session={session} onBack={() => setScreen('pick')} />
+        <WorkoutTimer session={session} onBack={() => setScreen('preview')} />
       )}
     </div>
   )

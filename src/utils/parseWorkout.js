@@ -37,7 +37,7 @@ export function parseWorkoutFile(text) {
     }
 
     const [name, workRaw, restRaw, ...descParts] = parts
-    const description = descParts.join(',').trim()
+    const description = descParts.join(', ').trim()
     const workDuration = parseInt(workRaw, 10)
     const restDuration = parseInt(restRaw, 10)
 

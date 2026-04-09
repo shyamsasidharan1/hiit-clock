@@ -865,7 +865,7 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   border-bottom: 1px solid var(--border);
 }
 .preview-table tbody tr:last-child td { border-bottom: none; }
-.ptd-name { font-weight: 600; color: var(--text); white-space: nowrap; padding-right: 10px; }
+.ptd-name { font-weight: 600; color: var(--text); padding-right: 10px; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
 .ptd-desc { color: var(--muted); font-style: italic; line-height: 1.4; }
 .ptd-time { text-align: center; white-space: nowrap; }
 .work-badge {

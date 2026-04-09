@@ -148,17 +148,18 @@ export default function WorkoutChat({ onBack, onSaved }) {
                       <th>How to</th>
                       <th>Work</th>
                       <th>Rest</th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     {session.exercises.map((ex, j) => (
                       <tr key={j}>
-                        <td className="ptd-name">{ex.name}</td>
+                        <td className="ptd-name">
+                          {ex.name}
+                          <button className="demo-btn-sm" onClick={() => setDemoExercise(ex.name)}>Demo</button>
+                        </td>
                         <td className="ptd-desc">{ex.description || '—'}</td>
                         <td className="ptd-time"><span className="work-badge">{ex.workDuration}s</span></td>
                         <td className="ptd-time">{ex.restDuration > 0 ? <span className="rest-badge">{ex.restDuration}s</span> : '—'}</td>
-                        <td className="ptd-demo"><button className="demo-btn-sm" onClick={() => setDemoExercise(ex.name)}>Demo</button></td>
                       </tr>
                     ))}
                   </tbody>

@@ -43,9 +43,15 @@ export default function SessionPicker({ onSelect, onBack, onBuild, onGenerate, r
     <div className="picker-screen">
       <div className="picker-header-row">
         <h2 className="picker-title">Workouts</h2>
-        <div className="picker-actions">
-          <button className="btn-secondary ai-btn" onClick={onGenerate}>✦ AI Generate</button>
-          <button className="btn-ghost" onClick={onBuild}>+ Build</button>
+        <button className="btn-ghost" onClick={onBuild}>+ Build</button>
+      </div>
+
+      <div className="ai-generate-card" onClick={onGenerate}>
+        <div className="ai-generate-icon">✦</div>
+        <div className="ai-generate-text">
+          <div className="ai-generate-title">Generate your own workout</div>
+          <div className="ai-generate-subtitle">Tell AI what you want — it builds the plan for you</div>
+          <div className="ai-generate-example">"10 min core workout, 40s work 15s rest, no equipment"</div>
         </div>
       </div>
 

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { listWorkouts, getWorkout } from '../utils/api'
+import { listWorkouts, getWorkout, deleteWorkout } from '../utils/api'
 import { parseWorkoutFile, sessionDuration, formatTime } from '../utils/parseWorkout'
 
 export default function SessionPicker({ onSelect, onBack, onBuild, onGenerate, refreshKey }) {
-  const [workouts, setWorkouts] = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [error, setError]       = useState(null)
+  const [workouts, setWorkouts]   = useState([])
+  const [loading, setLoading]     = useState(true)
+  const [error, setError]         = useState(null)
+  const [deleting, setDeleting]   = useState(null)
 
   useEffect(() => { load() }, [refreshKey])
 
@@ -27,6 +28,15 @@ export default function SessionPicker({ onSelect, onBack, onBuild, onGenerate, r
     } finally {
       setLoading(false)
     }
+  }
+
+  async function handleDelete(e, key) {
+    e.stopPropagation()
+    if (!window.confirm('Delete this workout?')) return
+    setDeleting(key)
+    await deleteWorkout(key)
+    setDeleting(null)
+    load()
   }
 
   return (
@@ -54,12 +64,22 @@ export default function SessionPicker({ onSelect, onBack, onBuild, onGenerate, r
             const total = sessionDuration(session)
             return (
               <li key={i} className="session-card" onClick={() => onSelect(session)}>
-                <div className="session-name">{session.name}</div>
-                <div className="session-meta">
-                  <span>{session.exercises.length} exercises</span>
-                  <span className="dot">·</span>
-                  <span>{formatTime(total)}</span>
+                <div className="session-card-main">
+                  <div className="session-name">{session.name}</div>
+                  <div className="session-meta">
+                    <span>{session.exercises.length} exercises</span>
+                    <span className="dot">·</span>
+                    <span>{formatTime(total)}</span>
+                  </div>
                 </div>
+                <button
+                  className="delete-btn"
+                  onClick={e => handleDelete(e, session.key)}
+                  disabled={deleting === session.key}
+                  title="Delete workout"
+                >
+                  {deleting === session.key ? '…' : '🗑'}
+                </button>
               </li>
             )
           })}

@@ -49,6 +49,14 @@ export async function generateWorkout(description) {
   return { ok: true, text: data.text }
 }
 
+/** Delete a workout file by S3 key. */
+export async function deleteWorkout(key) {
+  const res = await fetch(`${API}/workout?key=${encodeURIComponent(key)}`, { method: 'DELETE' })
+  const data = await res.json()
+  if (!res.ok) return { ok: false, error: data.error || 'Delete failed' }
+  return { ok: true }
+}
+
 /** Sanitises a workout name into a valid S3 key */
 export function nameToKey(workoutName) {
   return workoutName.trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '') + '.txt'

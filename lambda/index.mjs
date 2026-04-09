@@ -1,4 +1,4 @@
-import { S3Client, ListObjectsV2Command, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, ListObjectsV2Command, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
 
 const BUCKET       = process.env.S3_BUCKET
@@ -12,7 +12,7 @@ const bedrock = new BedrockRuntimeClient({ region: REGION })
 // All CORS handled here in code — Function URL CORS config must be empty
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'content-type, x-admin-token',
 }
 
@@ -74,6 +74,14 @@ export const handler = async (event) => {
       await s3.send(new PutObjectCommand({
         Bucket: BUCKET, Key: key, Body: text, ContentType: 'text/plain',
       }))
+      return respond(200, { ok: true })
+    }
+
+    // ── DELETE /workout — delete a workout file ────────────────────────────
+    if (method === 'DELETE' && path === '/workout') {
+      const key = event.queryStringParameters?.key
+      if (!key) return respond(400, { error: 'Missing key parameter' })
+      await s3.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: key }))
       return respond(200, { ok: true })
     }
 

@@ -46,7 +46,7 @@ export default function WorkoutTimer({ session, onBack }) {
     setElapsed(el)
     if (announce) {
       if (ph === 'work') {
-        Audio.cueWorkStart(ex.name)
+        Audio.cueWorkStart(ex.name, ex.description)
         triggerPulse()
       } else {
         Audio.cueRest()
@@ -56,7 +56,7 @@ export default function WorkoutTimer({ session, onBack }) {
 
   // ── Session start ──────────────────────────────────────────────────────────
   useEffect(() => {
-    Audio.cueSessionStart(session.name, session.exercises[0].name)
+    Audio.cueSessionStart(session.name, session.exercises[0].name, session.exercises[0].description)
     triggerPulse()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -122,7 +122,7 @@ export default function WorkoutTimer({ session, onBack }) {
     } else {
       startPhase(nextIdx, 'work', el, !fromSkip)
       if (fromSkip) {
-        Audio.cueWorkStart(session.exercises[nextIdx].name)
+        Audio.cueWorkStart(session.exercises[nextIdx].name, session.exercises[nextIdx].description)
         triggerPulse()
       }
     }

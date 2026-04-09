@@ -29,12 +29,14 @@ function speak(text) {
   window.speechSynthesis.speak(utt)
 }
 
-export function cueSessionStart(sessionName, firstExercise) {
-  speak(`Starting ${sessionName}. First exercise: ${firstExercise}.`)
+export function cueSessionStart(sessionName, firstExercise, firstDescription) {
+  const desc = firstDescription ? ` ${firstDescription}.` : ''
+  speak(`Starting ${sessionName}. First exercise: ${firstExercise}.${desc}`)
 }
 
-export function cueWorkStart(exerciseName) {
-  speak(`${exerciseName}. Go!`)
+export function cueWorkStart(exerciseName, description) {
+  const desc = description ? ` ${description}.` : ''
+  speak(`${exerciseName}. Go!${desc}`)
 }
 
 export function cueHalfway() {

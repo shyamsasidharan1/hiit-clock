@@ -176,11 +176,26 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   padding: 18px 20px;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .session-card:hover {
   border-color: var(--accent);
   background: var(--surface2);
 }
+.session-card-main { flex: 1; min-width: 0; }
+.delete-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+  border-radius: 8px;
+  color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+}
+.delete-btn:hover { color: var(--danger); background: #f8717122; }
 .session-name { font-size: 1.1rem; font-weight: 600; }
 .session-meta { color: var(--muted); font-size: 0.82rem; margin-top: 6px; display: flex; gap: 6px; }
 .dot { opacity: 0.4; }
